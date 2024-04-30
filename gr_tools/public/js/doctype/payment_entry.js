@@ -4,7 +4,7 @@ frappe.ui.form.on("Payment Entry", {
 	onload(frm) {
 		console.log('onload');
 
-		frappe.db.get_list('Mode of Payment').then((results) => {
+		frappe.db.get_list('Mode of Payment', {filters: {'enabled': true}}).then((results) => {
 
 			let custom_control_df = Object.assign(frm.fields_dict['mode_of_payment'].df, {
 				fieldtype: 'MultiCheckSingle', columns: 2, options: results.map(c => c.name),
