@@ -9,18 +9,18 @@ app_license = "agpl-3.0"
 # Includes in <head>
 # ------------------
 
-# include js, css files in header of desk.html
+# include JS, CSS files in header of desk.html
 # app_include_css = "/assets/gr_tools/css/gr_tools.css"
-# app_include_js = "/assets/gr_tools/js/gr_tools.js"
+app_include_js = "gr_tools.bundle.js"
 
-# include js, css files in header of web template
+# include JS, CSS files in header of web template
 # web_include_css = "/assets/gr_tools/css/gr_tools.css"
 # web_include_js = "/assets/gr_tools/js/gr_tools.js"
 
-# include custom scss in every website theme (without file extension ".scss")
+# include custom SCSS in every website theme (without file extension ".scss")
 # website_theme_scss = "gr_tools/public/scss/website"
 
-# include js, css files in header of web form
+# include JS, CSS files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}
 # webform_include_css = {"doctype": "public/css/doctype.css"}
 
@@ -28,10 +28,15 @@ app_license = "agpl-3.0"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
+
+doctype_js = {"Payment Entry": "public/js/doctype/payment_entry.js"}
+
+doctype_list_js = {
+	"Purchase Invoice": "public/js/doctype_list/purchase_invoice_list.js",
+	"Sales Invoice": "public/js/doctype_list/sales_invoice_list.js"
+}
 
 # Svg Icons
 # ------------------
@@ -230,8 +235,8 @@ app_license = "agpl-3.0"
 after_migrate = 'gr_tools.grupo_real_tools.sync.after_migrate'
 
 fixtures = [
-	#'Issue Type',
-	#{'dt': 'Workspace', 'filters': {'name': 'Support'}}
+	# 'Issue Type',
+	# {'dt': 'Workspace', 'filters': {'name': 'Support'}}
 	{'dt': 'System Settings'},
 	{'dt': 'Website Settings'}
 ]
