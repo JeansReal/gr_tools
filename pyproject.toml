@@ -4,7 +4,7 @@ authors = [
     { name = "Agile Shift", email = "contacto@gruporeal.org"}
 ]
 description = "Custom configurations, tweaks and Tools for ERPNext and Frappe"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 readme = "README.md"
 dynamic = ["version"]
 
