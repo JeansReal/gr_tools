@@ -1,17 +1,13 @@
-Sales Invoice,Factura de Venta
-Sales Order,Orden de Venta
-
-Purchase Order,Orden de Compra
-Purchase Invoice,Factura de Compra
-
-Deliveries,Entrega
-
 List View,Vista de Lista
-Add a Filter,Agregar un Filtro
+Report View,Vista de Reporte
+
+Add a Filter,Agregar Filtro
 Clear Filters,Borrar Filtros
 Apply Filters,Aplicar Filtros
 
-Connections,Conexiones
+descending,descendente
+ascending,ascendente
+
 Print,Imprimir
 
 You created this,Usted creó esto
@@ -29,4 +25,21 @@ added rows for {0},agregó filas para {0}
 
 Type a reply / comment,Escriba una respuesta / comentario
 
+Sales Invoice,Factura de Venta
+Sales Order,Orden de Venta
+Purchase Order,Orden de Compra
+Purchase Invoice,Factura de Compra
+
+Payment Entry,Entrada de Pago
+
+Connections,Conexiones
+
 Target Warehouse,Almacén de Destino
+
+Payments,Pagos
+Terms,Términos
+
+Company,Empresa
+Company Tax ID,RUC
+
+Deliveries,Entrega

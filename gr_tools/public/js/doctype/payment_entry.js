@@ -1,8 +1,8 @@
 // TODO: Work in Progress!
 frappe.ui.form.on("Payment Entry", {
 
-	refresh(frm) {
-		console.log('REFRESH!');
+	onload(frm) {
+		console.log('onload');
 
 		frappe.db.get_list('Mode of Payment').then((results) => {
 
