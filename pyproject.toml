@@ -15,3 +15,5 @@ requires = ["flit_core >=3.4,<4"]
 build-backend = "flit_core.buildapi"
 
 [tool.bench.dev-dependencies]
+
+typing-modules = ["frappe.types.DF"]
