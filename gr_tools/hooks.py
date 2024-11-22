@@ -13,6 +13,12 @@ app_license = "agpl-3.0"
 # app_include_css = "/assets/gr_tools/css/gr_tools.css"
 app_include_js = "gr_tools.bundle.js"
 
+jinja = {
+	"methods": [
+		"gr_tools.grupo_real_tools.print_format.item_label_with_price.item_label_with_price.get_erpnext_price",
+	]
+}
+
 # include JS, CSS files in header of web template
 # web_include_css = "/assets/gr_tools/css/gr_tools.css"
 # web_include_js = "/assets/gr_tools/js/gr_tools.js"
