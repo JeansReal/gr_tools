@@ -16,7 +16,7 @@
  "margin_left": 15.0,
  "margin_right": 15.0,
  "margin_top": 15.0,
- "modified": "2024-11-23 16:31:39.598553",
+ "modified": "2024-11-23 16:53:50.917833",
  "modified_by": "Administrator",
  "module": "Grupo Real Tools",
  "name": "Item Label With Price",
@@ -25,7 +25,7 @@
  "print_format_builder": 0,
  "print_format_builder_beta": 0,
  "print_format_type": "Jinja",
- "raw_commands": "{% set pricing = get_erpnext_price(doc.item_code) %}\n\nSIZE 2,1\nDIRECTION 1\nCLS\n\nTEXT 128,4,\"1\",0,1,1,\"CLOTHING CENTER\"\n\n{% if doc.item_code|length >= 17 %}\nBARCODE 56,20,\"128\",40,1,0,1,2,\"{{doc.item_code}}\"\n{% elif doc.item_code|length >= 10 %}\nBARCODE 40,20,\"128\",40,1,0,2,2,\"{{doc.item_code}}\"\n{% else %}\nBARCODE 120,20,\"128\",40,1,0,2,2,\"{{doc.item_code}}\"\n{% endif %}\n\nBAR 0,80,406,5\n\n{% if pricing.discount_percent %}\n\nTEXT 55,100,\"2\",0,1,1,\"PRECIO:\"\nTEXT 35,132,\"3\",0,1,1,\"{{ pricing.formatted_mrp }}\"\n\nBAR 198,85,5,204\n\nTEXT 258,100,\"2\",0,1,1,\"OFERTA:\"\nTEXT 238,132,\"3\",0,1,1,\"{{ pricing.formatted_price }}\"\nTEXT 280,170,\"2\",0,1,1,\"{{ pricing.formatted_discount_percent }}\"\n\n{% else %}\n\nTEXT 145,108,\"2\",0,1,1,\"PRECIO:\"\nTEXT 125,148,\"3\",0,1,1,\"{{ pricing.formatted_price }}\"\n\n{% endif %}\n\nPRINT 1,1\nEND",
+ "raw_commands": "{% set pricing = get_erpnext_price(doc.item_code) %}\n\nSIZE 2,1\nDIRECTION 1\nCLS\n\nTEXT 128,4,\"1\",0,1,1,\"CLOTHING CENTER\"\n\n{% if doc.item_code|length >= 17 %}\nBARCODE 60,20,\"128\",40,2,0,1,2,\"{{doc.item_code}}\"\n{% elif doc.item_code|length >= 10 %}\nBARCODE 40,20,\"128\",40,1,0,2,2,\"{{doc.item_code}}\"\n{% else %}\nBARCODE 120,20,\"128\",40,1,0,2,2,\"{{doc.item_code}}\"\n{% endif %}\n\nBAR 0,80,406,5\n\n{% if pricing.discount_percent %}\n\nTEXT 55,100,\"2\",0,1,1,\"PRECIO:\"\nTEXT 35,132,\"3\",0,1,1,\"{{ pricing.formatted_mrp }}\"\n\nBAR 198,85,5,204\n\nTEXT 258,100,\"2\",0,1,1,\"OFERTA:\"\nTEXT 238,132,\"3\",0,1,1,\"{{ pricing.formatted_price }}\"\nTEXT 280,170,\"2\",0,1,1,\"{{ pricing.formatted_discount_percent }}\"\n\n{% else %}\n\nTEXT 145,108,\"2\",0,1,1,\"PRECIO:\"\nTEXT 125,148,\"3\",0,1,1,\"{{ pricing.formatted_price }}\"\n\n{% endif %}\n\nPRINT 1,1\nEND",
  "raw_printing": 1,
  "show_section_headings": 0,
  "standard": "Yes"
