@@ -13,6 +13,7 @@ def get_erpnext_price(item_code):
 
 	pricing = get_price(item_code, price_list=selling_price_list, customer_group='', company=default_company)
 
-	pricing.formatted_discount_percent = f"{pricing.discount_percent:.0f}%"
+	if pricing.discount_percent:  # If there is any discount
+		pricing.formatted_discount_percent = f"{pricing.discount_percent:.0f}%"
 
 	return pricing
