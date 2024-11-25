@@ -7,6 +7,7 @@ def get_products(start=0, limit=12):
 	query = """
 		SELECT
 			item.item_name,
+			item.image,
 			bin.item_code,
 			bin.actual_qty
 		FROM
