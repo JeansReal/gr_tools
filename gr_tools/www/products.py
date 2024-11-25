@@ -16,13 +16,14 @@ def get_products(start=0, limit=12):
 			bin.actual_qty > 0
 			AND bin.warehouse = 'Tienda - CL'
 		ORDER BY
-			bin.item_code ASC;
-	"""
+			item.creation ASC
+		LIMIT {start}, {limit};
+	""".format(start=start, limit=limit)
 
 	items = frappe.db.sql(query, as_dict=True)
 
 	for item in items:
-		set_product_info_for_website(item)
+		set_product_info_for_website(item)  # TODO: Optimize this. calling directly to get_price!
 
 	return items
 
