@@ -3,13 +3,13 @@ from erpnext.utilities.product import get_price
 
 
 @frappe.whitelist(allow_guest=True)
-def get_products(item_code: str = None, start: int = 0, limit: int = 15):
+def get_products(item_code: str = None, category: str = None, start: int = 0, limit: int = 15):
 	"""
-	Get a list of available products or a specific product by item_code.
-	Copy from: get_product_info_for_website
+	Get a list of available products or a specific product by item_code. Includes filtering by category and its descendants.
 
 	Parameters:
 		item_code (str): If provided, fetches only the specific product.
+		category (str): If provided, fetches products from the specific category and its child categories.
 		start (int): Pagination start index.
 		limit (int): Number of products to fetch.
 
@@ -20,6 +20,7 @@ def get_products(item_code: str = None, start: int = 0, limit: int = 15):
 	# TODO: Set a Default Warehouse, Maybe for each item?
 	# FIXME: Dont Show Reserved Stock!
 	# FIXME: Show BackOrder Products(For future sales or pre-orders)
+	[[price_list, company]] = frappe.db.get_values_from_single(['price_list', 'company'], None, 'WebShop Settings')
 
 	query = """
 		SELECT
@@ -33,14 +34,21 @@ def get_products(item_code: str = None, start: int = 0, limit: int = 15):
 		WHERE bin.actual_qty > 0 AND bin.warehouse = 'Tienda - CL'
 	"""
 
-	if item_code:
+	if item_code:  # Filter by Item Code
 		query += " AND item.item_code = %(item_code)s LIMIT 1"
 		items = frappe.db.sql(query, {'item_code': item_code}, as_dict=True)
-	else:
-		query += " ORDER BY item.creation DESC LIMIT %(start)s, %(limit)s;"
-		items = frappe.db.sql(query, {"start": start, "limit": limit}, as_dict=True)
+	else:  # Filter by category and its descendants
+		if category:
+			if categories := get_descendant_categories(category):
+				query += " AND item.item_group IN %(categories)s"
+			else:
+				return []  # Bad Item Group
 
-	[[price_list, company]] = frappe.db.get_values_from_single(['price_list', 'company'], None, 'WebShop Settings')
+		# Add Pagination
+		items = frappe.db.sql(query + " ORDER BY item.creation DESC LIMIT %(start)s, %(limit)s;", {
+			"start": start, "limit": limit,
+			"categories": categories if category else None
+		}, as_dict=True)
 
 	for item in items:
 		item.price = get_price(item.item_code, price_list=price_list, customer_group='', company=company)
@@ -48,8 +56,24 @@ def get_products(item_code: str = None, start: int = 0, limit: int = 15):
 	return items
 
 
+def get_descendant_categories(parent_category: str) -> list[str]:
+	# Get all descendant categories
+	descendant_groups = frappe.db.sql("""
+		WITH RECURSIVE category_tree AS (
+			SELECT name FROM `tabItem Group` WHERE name = %(category)s
+			UNION ALL
+			SELECT ig.name
+			FROM `tabItem Group` ig
+			INNER JOIN category_tree ct ON ig.parent_item_group = ct.name
+		)
+		SELECT name FROM category_tree;
+		""", {"category": parent_category}, pluck='name')
+	return descendant_groups
+
+
 @frappe.whitelist(allow_guest=True)
 def get_categories():
+	# UNUSED!
 	data = frappe.db.get_all(
 		'Item Group',
 		fields=['name', 'is_group as isLeaf', 'parent_item_group', 'idx as counter'],
