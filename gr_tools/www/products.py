@@ -23,16 +23,20 @@ def get_products(item_code: str = None, category: str = None, start: int = 0, li
 	[[price_list, company]] = frappe.db.get_values_from_single(['price_list', 'company'], None, 'WebShop Settings')
 
 	# Query for Available Items. FIXME: projected_qty = actual_qty - reserved_qty | Test: Planned | Requested | Ordered
+	# actual_qty = All Items at Warehouse
+	# reserved_qty = Sum of Items in Sales Orders(Not Draft) and Stock Reservation
+	# projected_qty = actual_qty - reserved_qty
+	# reserved_stock = Sum of Items in Stock Reservation
 	query = """
 		SELECT
 			item.item_name,
 			item.image,
 			item.item_group,
 			bin.item_code,
-			(bin.actual_qty - bin.reserved_qty) as actual_qty
+			(bin.actual_qty - bin.reserved_stock) as actual_qty
 		FROM `tabBin` AS bin
 		JOIN `tabItem` AS item ON item.item_code = bin.item_code
-		WHERE (bin.actual_qty - bin.reserved_qty) > 0 AND bin.warehouse = 'Tienda - CL'
+		WHERE (bin.actual_qty - bin.reserved_stock) > 0 AND bin.warehouse = 'Tienda - CL'
 	"""
 
 	if item_code:  # Filter by Item Code
