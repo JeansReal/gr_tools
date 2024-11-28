@@ -22,16 +22,17 @@ def get_products(item_code: str = None, category: str = None, start: int = 0, li
 	# FIXME: Show BackOrder Products(For future sales or pre-orders)
 	[[price_list, company]] = frappe.db.get_values_from_single(['price_list', 'company'], None, 'WebShop Settings')
 
+	# Query for Available Items. FIXME: projected_qty = actual_qty - reserved_qty | Test: Planned | Requested | Ordered
 	query = """
 		SELECT
 			item.item_name,
 			item.image,
 			item.item_group,
 			bin.item_code,
-			bin.actual_qty
+			(bin.actual_qty - bin.reserved_qty) as actual_qty
 		FROM `tabBin` AS bin
 		JOIN `tabItem` AS item ON item.item_code = bin.item_code
-		WHERE bin.actual_qty > 0 AND bin.warehouse = 'Tienda - CL'
+		WHERE (bin.actual_qty - bin.reserved_qty) > 0 AND bin.warehouse = 'Tienda - CL'
 	"""
 
 	if item_code:  # Filter by Item Code
@@ -73,7 +74,7 @@ def get_descendant_categories(parent_category: str) -> list[str]:
 
 @frappe.whitelist(allow_guest=True)
 def get_categories():
-	# UNUSED!
+	# FIXME: UNUSED!
 	data = frappe.db.get_all(
 		'Item Group',
 		fields=['name', 'is_group as isLeaf', 'parent_item_group', 'idx as counter'],
