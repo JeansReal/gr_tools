@@ -20,7 +20,9 @@ def get_products(item_code: str = None, category: str = None, start: int = 0, li
 	# TODO: Set a Default Warehouse, Maybe for each item?
 	# FIXME: Dont Show Reserved Stock!
 	# FIXME: Show BackOrder Products(For future sales or pre-orders)
-	[[price_list, company]] = frappe.db.get_values_from_single(['price_list', 'company'], None, 'WebShop Settings')
+	company = frappe.get_cached_value("Global Defaults", "Global Defaults", "default_company")
+	price_list = frappe.get_cached_value('Selling Settings', 'Selling Settings', 'selling_price_list')
+	default_warehouse = frappe.get_cached_value('Stock Settings', 'Stock Settings', 'default_warehouse')
 
 	# Query for Available Items. FIXME: projected_qty = actual_qty - reserved_qty | Test: Planned | Requested | Ordered
 	# actual_qty = All Items at Warehouse
@@ -36,8 +38,8 @@ def get_products(item_code: str = None, category: str = None, start: int = 0, li
 			(bin.actual_qty - bin.reserved_stock) as actual_qty
 		FROM `tabBin` AS bin
 		JOIN `tabItem` AS item ON item.item_code = bin.item_code
-		WHERE (bin.actual_qty - bin.reserved_stock) > 0 AND bin.warehouse = 'Tienda - CL'
-	"""
+		WHERE (bin.actual_qty - bin.reserved_stock) > 0 AND bin.warehouse = '{warehouse}'
+	""".format(warehouse=default_warehouse)
 
 	if item_code:  # Filter by Item Code
 		query += " AND item.item_code = %(item_code)s LIMIT 1"
@@ -85,7 +87,7 @@ def get_categories():
 		filters={'show_in_website': 1}, order_by='is_group DESC'
 	)
 
-	frappe.log_error(title="Debug: Data without Filters", message=data)
+	# FIXME: What for? -> frappe.log_error(title="Debug: Data without Filters", message=data)
 
 	# Diccionario para almacenar nodos y sus hijos
 	nodes = {}
