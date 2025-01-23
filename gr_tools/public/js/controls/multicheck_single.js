@@ -38,14 +38,10 @@ frappe.ui.form.ControlMultiCheckSingle = class ControlMultiCheckSingle extends f
 		// No need to call -> super(). See: /form/controls/multicheck.js -> parse_df_options(); From the parent class
 
 		if (Array.isArray(this.df.options)) {
-			this.options = this.df.options.map(t => ({
-				value: t, description: __(t), label: __(t)
-			}));
+			this.options = this.df.options.map(t => ({value: t, description: __(t), label: __(t)}));
 		} else {
 			 //'checked': Gives Error if a value not the default is selected in quickEntry. It shows selected the default always
-			this.options = this.df.options.split('\n').map(t => ({
-				value: t, description: __(t), label: __(t)
-			}));
+			this.options = this.df.options.split('\n').map(t => ({value: t, description: __(t), label: __(t)}));
 		}
 	}
 
